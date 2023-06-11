@@ -27,7 +27,7 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         
-             sh "docker push lechiffresene/odoo-module:${shortCommit} "
+             sh "docker push alune/odoo-module:${shortCommit} "
       }
     }
 
