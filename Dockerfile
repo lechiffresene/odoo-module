@@ -1,65 +1,44 @@
-# Utilisez l'image de base officielle d'Odoo 16
 FROM odoo:16
 
-# Copiez votre configuration personnalisée d'Odoo dans l'image
-COPY ./odoo.conf /etc/odoo/odoo.conf
-
-# Copiez votre fichier entrypoint.sh dans l'image
-COPY ./entrypoint.sh /entrypoint.sh
-
-# Définissez l'utilisateur root pour pouvoir effectuer des modifications
 USER root
 
-# Installez les dépendances système supplémentaires si nécessaire
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libssl-dev \
-    libffi-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    libsasl2-dev \
-    libldap2-dev \
-    libjpeg-dev \
-    libpq-dev \
-    libjpeg62-turbo-dev \
-    libwebp-dev \
-    libtiff5-dev \
-    libopenjp2-7-dev \
-    liblcms2-dev \
-    libtiff-dev \
-    libyaml-dev \
-    libffi-dev \
-    liblz-dev \
-    libjpeg-dev \
-    liblcms2-dev \
-    libblas-dev \
-    libatlas-base-dev \
-    python3-dev \
-    python3-ldap \
-    libldap2-dev \
-    libsasl2-dev \
-    freetds-dev \
-    libssl-dev \
-    libsnmp-dev \
-    libssl-dev \
-    libffi-dev \
-    libsasl2-dev \
-    python3-setuptools \
-    libmysqlclient-dev \
-    python3-pip \
-    libxslt-dev \
-    libxml2 \
-    libxml2-dev \
-    libjpeg62-turbo-dev \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update
+### /install some development  tools 
+RUN apt install -y unoconv vim git
 
-# Changez l'utilisateur à nouveau à l'utilisateur Odoo par défaut
+### Install some dependencies needed by ijayo modules
+# RUN pip install docxtpl
+# RUN apt -y install libreoffice
+# RUN pip install kafka-python
+
+### Copy custume modules addons  
+
+### Copy entreprise  modules addons   
+
+#COPY ./enterprise_addons/  /mnt/extra-addons
+
+### Create data folder for persistant volume
+RUN mkdir -p /home/odoo_filestore \
+     && chown -R odoo:odoo /home/odoo_filestore
+
+
+RUN mkdir -p /home/odoo_filestore/scripts \
+    && chown -R odoo:odoo /home/odoo_filestore/scripts
+
+COPY ./script.sh  /home/odoo_filestore/scripts 
+
+### Copy the edited entrypoint 
+COPY ./entrypoint.sh  /
+
+### Copy the edited odoo.conf
+COPY ./config/odoo.conf /etc/odoo/  
+
+### Edit permision on entrypoint.sh
+RUN chown odoo /entrypoint.sh \
+    && chmod 777 /entrypoint.sh
+
+### Edit permision on odoo.conf
+RUN chown odoo /etc/odoo/odoo.conf 
+
+### Change user to odoo 
 USER odoo
-
-# Exposez le port d'Odoo si nécessaire
-EXPOSE 8069
-
-# Définissez l'entrée de démarrage du conteneur sur entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
