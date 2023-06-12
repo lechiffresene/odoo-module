@@ -20,21 +20,21 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-             sh "docker build -t auguria/odoo-module:${shortCommit} ."
+             sh "docker build -t alune/auguria/odoo-module:${shortCommit} ."
       }
     }
 
     stage('Push Docker Image') {
       steps {
         
-             sh "docker push auguria/odoo-module:${shortCommit} "
+             sh "docker push alune/auguria/odoo-module:${shortCommit} "
       }
     }
 
      stage('clean image') {
       steps {
         
-             sh "docker rmi -t auguria/odoo-module:${shortCommit} "
+             sh "docker rmi -t alune/auguria/odoo-module:${shortCommit} "
       }
     }
   }
