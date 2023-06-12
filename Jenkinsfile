@@ -20,7 +20,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-             sh "docker build -t lechiffresene/odoo-module:${shortCommit} ."
+             sh "docker build -t alune/odoo-module:${shortCommit} ."
       }
     }
 
@@ -34,7 +34,7 @@ pipeline {
      stage('clean image') {
       steps {
         
-             sh "docker rmi -t lechiffresene/odoo-module:${shortCommit} "
+             sh "docker rmi -t alune/odoo-module:${shortCommit} "
       }
     }
   }
