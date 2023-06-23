@@ -20,21 +20,21 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-             sh "docker build -t alune/auguria:${shortCommit} ."
+             sh "docker build -t cdelambert/odooauguria:${shortCommit} ."
       }
     }
 
     stage('Push Docker Image') {
       steps {
         
-             sh "docker push alune/auguria:${shortCommit} "
+             sh "docker push cdelambert/odooauguria:${shortCommit} "
       }
     }
 
      stage('clean image') {
       steps {
         
-             sh "docker rmi -t alune/auguria:${shortCommit} "
+             sh "docker rmi -t cdelambert/odooauguria:${shortCommit} "
       }
     }
   }
