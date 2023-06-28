@@ -5,7 +5,7 @@ pipeline {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()  
-                def DOCKERHUB_CREDENTIALS=credentials(‘cdelambert-dockerhub’)
+                
                 
             }
 
@@ -22,15 +22,6 @@ pipeline {
     stage('Build Docker Image') {
       steps {
              sh "docker build -t cdelambert/odooauguria:${shortCommit} ."
-      }
-    }
-    stage('Login') {
-      steps {
-            
-             
-             sh 'echo $DOCKERHUB_CREDENTIALS_PSW  | docker login -u $DOCKERHUB_CREDENTIALS_USR  —password-stdin'
-             
-             
       }
     }
 
