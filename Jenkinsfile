@@ -4,7 +4,8 @@ pipeline {
   environment {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()  
+                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
+                registryCredentials = 'dockerhub_credentials'  
                 
                 
             }
@@ -24,6 +25,14 @@ pipeline {
              sh "docker build -t cdelambert/odooauguria:${shortCommit} ."
       }
     }
+
+    stage('Docker Login') {
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', registryCredentials) {
+               
+            }
+        }
 
     stage('Push Docker Image') {
       steps {
