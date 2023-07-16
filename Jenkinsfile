@@ -43,12 +43,10 @@ pipeline {
       }
     }
 
-     stage('clean image') {
+    stage('clean image') {
       steps {
         
              sh "docker rmi -t cdelambert/odooauguria:${shortCommit} "
       }
     }
   }
-
-
