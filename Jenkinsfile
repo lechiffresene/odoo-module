@@ -5,9 +5,7 @@ pipeline {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
-                def dockerRegistry = 'https://hub.docker.com/repository/docker/cdelambert/odooauguria'    
-                def dockerUsername = 'docker@auguria.fr'
-                def dockerPassword = credentials('auguria-dockerhb')
+                DOCKERHUB_CREDENTIALS = credentials('dockerhub')
 
                 
                 
@@ -28,13 +26,17 @@ pipeline {
              sh "docker build -t cdelambert/odooauguria:${shortCommit} ."
       }
     }
+     stage('Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
 
-    
 
     stage('Push Docker Image') {
       steps {
             
-             docker.withRegistry(dockerRegistry, dockerUsername, dockerPassword){
+            
              sh "docker push cdelambert/odooauguria:${shortCommit} "
              
        }      
