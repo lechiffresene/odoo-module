@@ -5,7 +5,7 @@ pipeline {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
-                DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+                //DOCKERHUB_CREDENTIALS = credentials('dockerhub')
 
                 
                 
@@ -50,5 +50,5 @@ pipeline {
       }
     }
   }
-  
+
 }
