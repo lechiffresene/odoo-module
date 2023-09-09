@@ -31,10 +31,15 @@ pipeline {
     stage('Push Docker Image') {
       steps {
             
-            
+            script {
+
+             withCredentials([usernameColonPassword(credentialsId: 'auguria-dockerhb', variable: 'dockerhub')]) {
              sh "docker push cdelambert/odooauguria:${shortCommit} "
+            
              
        }      
+      }
+      }
       }
     
 
