@@ -33,7 +33,7 @@ pipeline {
             
             script {
 
-             withCredentials([usernameColonPassword(credentialsId: 'auguria-dockerhb', variable: 'dockerhub')]) {
+             withCredentials('','auguria-dockerhb	') {
              sh "docker push cdelambert/odooauguria:${shortCommit} "
             
              
