@@ -47,6 +47,7 @@ pipeline {
       }
       }
       }
+      }
     
 
     stage('clean image') {
@@ -56,5 +57,4 @@ pipeline {
       }
     }
   }
-
-}
+ }
