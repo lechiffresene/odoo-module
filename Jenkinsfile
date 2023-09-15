@@ -5,7 +5,7 @@ pipeline {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
-                DOCKER_REGISTRY_CREDENTIALS = credentials('auguria-dockerhb')
+                //DOCKER_REGISTRY_CREDENTIALS = credentials('auguria-dockerhb')
                 //DOCKER_IMAGE = "cdelambert/odooauguria:${shortCommit}"
                 
 
@@ -32,22 +32,17 @@ pipeline {
 
     stage('Push Docker Image') {
       steps {
+                     
             
-            script {
-
-
-              
-             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS']]) {
-                        // Connexion au registre Docker
-             docker.withRegistry('', DOCKER_USER, DOCKER_PASS) {
+             docker.withRegistry('https://hub.docker.com/repository/docker/cdelambert/','auguria-dockerhb') {
              sh "docker push cdelambert/odooauguria:${shortCommit} "
             
              
        }      
       }
       }
-      }
-      }
+      
+      
     
 
     stage('clean image') {
