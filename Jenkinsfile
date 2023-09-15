@@ -34,7 +34,7 @@ pipeline {
       steps {
                      
             
-             docker.withRegistry('https://hub.docker.com/repository/docker/cdelambert/','auguria-dockerhb') {
+             docker.withRegistry('https://registry.hub.docker.com','auguria-dockerhb') {
              sh "docker push cdelambert/odooauguria:${shortCommit} "
             
              
