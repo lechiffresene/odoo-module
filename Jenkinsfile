@@ -9,7 +9,7 @@ pipeline {
                 DOCKER_IMAGE = "cdelambert/odooauguria:${shortCommit}"
                 
 
-                
+      
                 
             }
 
@@ -35,8 +35,8 @@ pipeline {
             
              script {
                     // Authenticate with Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
-                        // Push the Docker image to Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                    // Push the Docker image to Docker Hub
                         docker.image(DOCKER_IMAGE).push()
                     }
                 }
@@ -47,8 +47,6 @@ pipeline {
       
       
       
-    
-
     stage('clean image') {
       steps {
         
