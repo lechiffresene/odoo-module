@@ -62,7 +62,7 @@ pipeline {
                 steps {
                         script {
                     // Authenticate with Docker Hub
-                    docker.withRegistry('https://registry.docker.io', 'DOCKERHUB_CREDENTIALS') {
+                    docker.withRegistry('https://hub.docker.io', 'DOCKERHUB_CREDENTIALS') {
                     // Push the Docker image to Docker Hub
                         sh "docker push cdelambert/odoo-auguria:${shortCommit} "
                     }
