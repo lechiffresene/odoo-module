@@ -9,30 +9,41 @@ pipeline {
             }
 
 
-    stages {
 
-            stage('Create  addons directories ') {
+             stages {
+    stage('Checkout') {
+      steps {
+        
+        git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' ) 
+        
+      }
+    }
+
+
+   // stages {
+
+           // stage('Create  addons directories ') {
  
-            steps {
-                sh "mkdir -p enterprise_addons  "
-            }
+           // steps {
+              //  sh "mkdir -p enterprise_addons  "
+           // }
  
-            }
+           // }
 
-            stage('Add entreprise addons') {
+           // stage('Add entreprise addons') {
 
-                steps {
-                    script {
-                        dir('odoo-enterprise') {
-                            sh "rm -rf ./*"
-                            git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' )
-                            sh " cp -r ./odoo/addons/*  ../enterprise_addons   "
-                            sh " ls -lh ../enterprise_addons"
-                        }
-                    }
-                }
+               // steps {
+                  //  script {
+                    //    dir('odoo-enterprise') {
+                         //   sh "rm -rf ./*"
+                        //    git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' )
+                         //   sh " cp -r ./odoo/addons/*  ../enterprise_addons   "
+                           // sh " ls -lh ../enterprise_addons"
+                    //    }
+                //    }
+              //  }
             
-            }
+            //}
 
             stage('Build image') {
 
