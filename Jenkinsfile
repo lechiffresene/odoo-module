@@ -1,57 +1,66 @@
 pipeline {
-  agent any
 
-  environment {
+    agent any 
+
+    environment {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
-                DOCKERHUB_CREDENTIALS= credentials('auguria-dockerhb')
-                DOCKER_IMAGE = "cdelambert/odooauguria:${shortCommit}"
-                
-
-      
-                
+                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()  
             }
 
 
-  stages {
-    stage('Checkout') {
-      steps {
-        
-        git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' ) 
-        
-      }
-    }
+    stages {
 
-    stage('Build Docker Image') {
-      steps {
-             sh "docker build -t cdelambert/odooauguria:${shortCommit} ."
-      }
-    }
-   
+            stage('Create  addons directories ') {
+ 
+            steps {
+                sh "mkdir -p enterprise_addons  "
+            }
+ 
+            }
 
-    stage('Push Docker Image') {
-      steps {        
-            
-             script {
-                    // Authenticate with Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
-                    // Push the Docker image to Docker Hub
-                        docker.image(DOCKER_IMAGE).push()
+            stage('Add entreprise addons') {
+
+                steps {
+                    script {
+                        dir('odoo-enterprise') {
+                            sh "rm -rf ./*"
+                            git(  url: 'git@github.com:lechiffresene/odoo-module.git', branch: 'stagging' )
+                            sh " cp -r ./odoo/addons/*  ../enterprise_addons   "
+                            sh " ls -lh ../enterprise_addons"
+                        }
                     }
                 }
             
-             
-       }      
-      }
-      
-      
-      
-    stage('clean image') {
-      steps {
-        
-             sh "docker rmi -t cdelambert/odooauguria:${shortCommit} "
-      }
+            }
+
+            stage('Build image') {
+
+                steps {
+                        sh "docker build -t cdelambert/odoo-auguria:${shortCommit}  ."
+
+
+                }
+            }
+
+
+            stage('Push image') {
+                
+                steps {
+                        sh "docker push cdelambert/odoo-auguria:${shortCommit} "
+
+
+                }
+            }
+
+            stage('Clean image') {
+                
+                steps {
+                        sh "docker rmi cdelambert/odoo-auguria:${shortCommit} "
+
+                }
+            }
+           
     }
-  }
- }
+
+}

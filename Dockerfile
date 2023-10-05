@@ -15,7 +15,7 @@ RUN apt install -y unoconv vim git
 
 ### Copy entreprise  modules addons   
 
-#COPY ./enterprise_addons/  /mnt/extra-addons
+COPY ./enterprise_addons/  /mnt/extra-addons
 
 ### Create data folder for persistant volume
 RUN mkdir -p /home/odoo_filestore \
