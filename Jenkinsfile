@@ -5,7 +5,9 @@ pipeline {
     environment {
 
                 def shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()  
+                def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
+                DOCKERHUB_CREDENTIALS= credentials('auguria-dockerhb')
+                
             }
 
 
@@ -58,7 +60,13 @@ pipeline {
             stage('Push image') {
                 
                 steps {
+                        script {
+                    // Authenticate with Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.io', 'DOCKERHUB_CREDENTIALS') {
+                    // Push the Docker image to Docker Hub
                         sh "docker push cdelambert/odoo-auguria:${shortCommit} "
+                    }
+                }
 
 
                 }
