@@ -35,17 +35,15 @@ case "$1" in
             exec odoo "$@"
         else
             wait-for-psql.py ${DB_ARGS[@]} --timeout=30
-            exec odoo "$@" "${DB_ARGS[@]}" -d erp -u all -c /etc/odoo/odoo.conf
+            exec odoo "$@" "${DB_ARGS[@]}"  -c /etc/odoo/odoo.conf
         fi
         ;;
     -*)
         wait-for-psql.py ${DB_ARGS[@]} --timeout=30
-        exec odoo "$@" "${DB_ARGS[@]}" -d erp -u all -c /etc/odoo/odoo.conf 
+        exec odoo "$@" "${DB_ARGS[@]}"  -c /etc/odoo/odoo.conf 
         ;;
     *)
         exec "$@"
 esac
 
 exit 1
-
-
