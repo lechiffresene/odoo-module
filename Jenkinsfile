@@ -8,7 +8,15 @@ pipeline {
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
                 DOCKERHUB_CREDENTIALS = credentials('jenkins-hub')
             }
+    stages {
 
+            stage('Create  addons directories ') {
+ 
+            steps {
+                sh "mkdir -p enterprise_addons  "
+            }
+ 
+            }
 
 
              stages {
@@ -20,7 +28,7 @@ pipeline {
       }
     }
 
-              stage('Add enterprise  addons  ') {
+            stage('Add enterprise  addons  ') {
                 when {
                         branch ‘stagging’
                }
