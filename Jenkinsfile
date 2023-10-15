@@ -37,7 +37,7 @@ pipeline {
                     script {
                         dir('odoo-enterprise') {
                             sh "rm -rf ./*"
-                            git( credentialsId: "jenkins-hub" url: 'git@github.com:lechiffresene/enterprise_addons.git', branch: 'stagging' )
+                            git( credentialsId: "jenkins-hub" , url: 'https://github.com/lechiffresene/enterprise_addons.git', branch: 'stagging' )
                             sh " cp -r ./*  ../enterprise_addons   "
                             sh " ls -lh ../enterprise_addons"
                         }
