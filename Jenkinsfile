@@ -20,31 +20,16 @@ pipeline {
       }
     }
 
-
-   // stages {
-
-        //    stage('Create  addons directories ') {
- 
-          //  steps {
-               // sh "mkdir -p enterprise_addons  "
-          //  }
- 
-           // }
-
-            stage('Add entreprise addons') {
+              stage('Add enterprise  addons  ') {
+                when {
+                        branch ‘stagging’
+               }
 
                 steps {
-                    script {
-                        dir('odoo-enterprise') {
-                            sh "rm -rf ./*"
-                            git(  credentialsId: "jenkins-hub", url: 'https://github.com/lechiffresene/enterprise_addons.git', branch: 'main' ) 
-                            sh " cp -r ./*  ../enterprise_addons   "
-                            sh " ls -lh ../enterprise_addons"
-                        }
-                    }
-                }
-            
-            }
+                    sh " cp -r ./chorus_account \
+                            ./enterprise_addons/  && ls ./enterprise_addons "
+                     }
+                  }
 
             stage('Build image') {
 
