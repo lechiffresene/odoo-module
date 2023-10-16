@@ -8,18 +8,10 @@ pipeline {
                 def author = sh(returnStdout: true, script: "git show -s --pretty=%an").trim()
                 DOCKERHUB_CREDENTIALS = credentials('jenkins-hub')
             }
-    stages {
-
-            stage('Create  addons directories ') {
- 
-            steps {
-                sh "mkdir -p enterprise_addons  "
-            }
- 
-            }
 
 
-             
+
+             stages {
     stage('Checkout') {
       steps {
         
@@ -28,16 +20,31 @@ pipeline {
       }
     }
 
-            stage('Add enterprise  addons  ') {
-                when {
-                        branch ‘stagging’
-               }
 
-                steps {
-                    sh " cp -r ./chorus_account \
-                            ./enterprise_addons/  && ls ./enterprise_addons "
-                     }
-                  }
+   // stages {
+
+           // stage('Create  addons directories ') {
+ 
+           // steps {
+              //  sh "mkdir -p enterprise_addons  "
+           // }
+ 
+           // }
+
+           // stage('Add entreprise addons') {
+
+               // steps {
+                  //  script {
+                    //    dir('odoo-enterprise') {
+                         //   sh "rm -rf ./*"
+                        //    git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' )
+                         //   sh " cp -r ./odoo/addons/*  ../enterprise_addons   "
+                           // sh " ls -lh ../enterprise_addons"
+                    //    }
+                //    }
+              //  }
+            
+            //}
 
             stage('Build image') {
 
@@ -53,7 +60,7 @@ pipeline {
                          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                  
                 }
-            }
+          }
 
 
             stage('Push image') {
