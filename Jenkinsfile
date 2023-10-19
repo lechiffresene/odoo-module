@@ -9,6 +9,16 @@ pipeline {
                 DOCKERHUB_CREDENTIALS = credentials('jenkins-hub')
             }
 
+            stages {
+
+            stage('Create  addons directories ') {
+ 
+            steps {
+                sh "mkdir -p enterprise_addons  "
+            }
+ 
+            }
+
 
 
              stages {
@@ -21,30 +31,18 @@ pipeline {
     }
 
 
-   // stages {
+   stage('Add enterprise addons  ') {
+              when {
+                        branch 'stagging'
+                }
 
-           // stage('Create  addons directories ') {
- 
-           // steps {
-              //  sh "mkdir -p enterprise_addons  "
-           // }
- 
-           // }
-
-           // stage('Add entreprise addons') {
-
-               // steps {
-                  //  script {
-                    //    dir('odoo-enterprise') {
-                         //   sh "rm -rf ./*"
-                        //    git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' )
-                         //   sh " cp -r ./odoo/addons/*  ../enterprise_addons   "
-                           // sh " ls -lh ../enterprise_addons"
-                    //    }
-                //    }
-              //  }
-            
-            //}
+                steps {
+                    sh " cp -r ./chorus_account \
+                            ./timesheet-16.0 \
+                            ./enterprise_addons/  "
+            }
+    
+            }  
 
             stage('Build image') {
 
