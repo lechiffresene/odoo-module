@@ -21,14 +21,14 @@ pipeline {
 
 
 
-             stages {
-    stage('Checkout') {
-      steps {
+          //   stages {
+   // stage('Checkout') {
+      //steps {
         
-        git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' ) 
+       // git(  url: 'https://github.com/lechiffresene/odoo-module.git', branch: 'stagging' ) 
         
-      }
-    }
+     // }
+   // }
 
 
    stage('Add enterprise addons  ') {
